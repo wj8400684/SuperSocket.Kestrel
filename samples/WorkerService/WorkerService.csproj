@@ -22,7 +22,6 @@
         <ProjectReference Include="..\..\src\SuperSocket.IOCPTcpChannelCreatorFactory\SuperSocket.IOCPTcpChannelCreatorFactory.csproj" />
         <ProjectReference Include="..\Commands\Commands.csproj" />
         <ProjectReference Include="..\Core\Core.csproj" />
-        <ProjectReference Include="C:\Users\84006\source\repos\SuperSocket.IOCPChannel\SuperSocket.IOCPTcpChannelCreatorFactory\SuperSocket.IOCPTcpChannelCreatorFactory.csproj" />
     </ItemGroup>
     <PropertyGroup>
         <ServerGarbageCollection>true</ServerGarbageCollection>

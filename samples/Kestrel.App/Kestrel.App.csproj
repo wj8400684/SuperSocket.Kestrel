@@ -19,7 +19,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\SuperSocket.Kestrel.Channel\SuperSocket.Kestrel.Channel.csproj" />
-        <ProjectReference Include="..\..\SuperSocket.Kestrel\SuperSocket.Kestrel.Channel\SuperSocket.Kestrel.Channel.csproj" />
         <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 

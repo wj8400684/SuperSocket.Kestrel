@@ -16,7 +16,6 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\SuperSocket.IOCPTcpEasyClient\SuperSocket.IOCPTcpEasyClient.csproj" />
         <ProjectReference Include="..\Core\Core.csproj" />
-        <ProjectReference Include="C:\Users\84006\source\repos\SuperSocket.IOCPChannel\SuperSocket.IOCPTcpChannel\SuperSocket.IOCPTcpChannel.csproj" />
     </ItemGroup>
 
 </Project>
