@@ -12,11 +12,11 @@ var host = SuperSocketHostBuilder.Create<RpcPackageBase, RpcPipeLineFilter>()
     .UseCommand(options => options.AddCommandAssembly(typeof(Login).Assembly))
     .UseClearIdleSession()
     .UseInProcSessionContainer()
-    //.UseIOCPTcpChannelCreatorFactory()
+    .UseIOCPTcpChannelCreatorFactory()
     .ConfigureServices((context, services) =>
     {
         services.AddLogging();
-        services.AddSingleton<IPacketFactoryPool, DefaultPacketFactoryPool>();
+        services.AddSingleton<IPacketFactoryPool, ReturnPacketFactoryPool>();
     })
     .Build();
 
