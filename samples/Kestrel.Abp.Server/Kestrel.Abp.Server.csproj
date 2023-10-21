@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>disable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    </ItemGroup>
+    <PropertyGroup>
+        <ServerGarbageCollection>true</ServerGarbageCollection>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\SuperSocket.IOCPTcpChannelCreatorFactory\SuperSocket.IOCPTcpChannelCreatorFactory.csproj" />
+        <ProjectReference Include="..\..\src\SuperSocket.Kestrel.Channel\SuperSocket.Kestrel.Channel.csproj" />
+        <ProjectReference Include="..\..\SuperSocket.Kestrel\SuperSocket.Kestrel\SuperSocket.Kestrel.csproj" />
+        <ProjectReference Include="..\Commands\Commands.csproj" />
+        <ProjectReference Include="..\Microsoft.AspNetCore.Server.PipeLine\Microsoft.AspNetCore.Server.PipeLine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Core" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Properties\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="Properties\launchSettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\SuperSocket.IOCPTcpChannel\SuperSocket.IOCPTcpChannel.csproj" />
+    </ItemGroup>
+
+</Project>

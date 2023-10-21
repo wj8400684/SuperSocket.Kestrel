@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="MemoryPack" Version="1.9.16" />
+        <PackageReference Include="Microsoft.Extensions.ObjectPool" Version="7.0.5" />
+        <PackageReference Include="SuperSocket.ProtoBase" Version="2.0.0-beta.18.421" />
+    </ItemGroup>
+</Project>

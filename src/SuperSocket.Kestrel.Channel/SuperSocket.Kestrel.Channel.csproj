@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Connections.Abstractions" Version="7.0.5" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+        <PackageReference Include="SuperSocket.Channel" Version="2.0.0-beta.18.421" />
+        <PackageReference Include="SuperSocket.ProtoBase" Version="2.0.0-beta.18.421" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Microsoft.AspNetCore.Server.PipeLine\Microsoft.AspNetCore.Server.PipeLine.csproj" />
+    </ItemGroup>
+</Project>

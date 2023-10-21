@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="SuperSocket.Client" Version="2.0.0-beta.18.421" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Microsoft.AspNetCore.Server.PipeLine\Microsoft.AspNetCore.Server.PipeLine.csproj" />
+      <ProjectReference Include="..\SuperSocket.IOCPTcpChannel\SuperSocket.IOCPTcpChannel.csproj" />
+    </ItemGroup>
+</Project>
