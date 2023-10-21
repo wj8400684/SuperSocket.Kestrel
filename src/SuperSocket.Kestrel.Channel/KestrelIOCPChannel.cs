@@ -12,7 +12,6 @@ namespace SuperSocket.Kestrel.Channel;
 public sealed class KestrelIOCPChannel<TPackageInfo> :
     ChannelBase<TPackageInfo>,
     IChannel<TPackageInfo>,
-    IChannel,
     IPipeChannel
 {
     private Task _readsTask;
