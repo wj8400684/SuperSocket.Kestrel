@@ -19,7 +19,6 @@ public sealed class DefaultPacketFactory<TPacket> : IPacketFactory
 
     public void Return(RpcPackageBase package)
     {
-        throw new NotImplementedException();
     }
 }
 

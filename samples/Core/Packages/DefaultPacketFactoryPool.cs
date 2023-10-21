@@ -59,7 +59,7 @@ public sealed class ReturnPacketFactoryPool : DefaultPacketFactoryPool
 
         foreach (var command in commands)
         {
-            var genericType = typeof(ReturnPacketFactory<>).MakeGenericType(command.Key);
+            var genericType = typeof(DefaultPacketFactory<>).MakeGenericType(command.Key);
 
             if (Activator.CreateInstance(genericType) is not IPacketFactory packetFactory)
                 continue;

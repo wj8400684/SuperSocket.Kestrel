@@ -21,7 +21,7 @@ if (!string.IsNullOrWhiteSpace(input))
 
 Console.WriteLine($"开始执行");
 
-for (int i = 0; i < count; i++)
+for (var i = 0; i < count; i++)
 {
     await easyClient.SendAsync(new LoginPackage
     {

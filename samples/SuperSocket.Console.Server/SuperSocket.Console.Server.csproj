@@ -19,6 +19,7 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\..\src\SuperSocket.IOCPTcpChannelCreatorFactory\SuperSocket.IOCPTcpChannelCreatorFactory.csproj" />
         <ProjectReference Include="..\Commands\Commands.csproj" />
         <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>

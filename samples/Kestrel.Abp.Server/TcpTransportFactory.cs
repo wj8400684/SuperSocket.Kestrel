@@ -30,14 +30,14 @@ public sealed class TcpTransportFactory : IChannelCreator
 
     public bool Start()
     {
-        var options = Options;
-
         try
         {
-            var listenEndpoint = options.GetListenEndPoint();
+            var listenEndpoint = Options.GetListenEndPoint();
 
-            _connectionListener = _socketTransportFactory.BindAsync(listenEndpoint).GetAwaiter().GetResult();
+            var result = _socketTransportFactory.BindAsync(listenEndpoint);
 
+            _connectionListener = result.IsCompleted ? result.Result : result.GetAwaiter().GetResult();
+            
             IsRunning = true;
 
             _cancellationTokenSource = new CancellationTokenSource();
@@ -63,7 +63,7 @@ public sealed class TcpTransportFactory : IChannelCreator
             }
             catch (Exception e)
             {
-                if (e is ObjectDisposedException || e is NullReferenceException)
+                if (e is ObjectDisposedException or NullReferenceException)
                     break;
 
                 if (e is SocketException se)
@@ -124,7 +124,7 @@ public sealed class TcpTransportFactory : IChannelCreator
         _stopTaskCompletionSource = new TaskCompletionSource<bool>();
 
         _cancellationTokenSource.Cancel();
-        _connectionListener.UnbindAsync(CancellationToken.None);
+         _connectionListener.UnbindAsync(CancellationToken.None).DoNotAwait();
 
         return _stopTaskCompletionSource.Task;
     }
