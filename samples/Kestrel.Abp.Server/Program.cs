@@ -6,6 +6,7 @@ using SuperSocket.Command;
 using SuperSocket.ProtoBase;
 using Commands;
 using Core.Packages;
+using SuperSocket.IOCPTcpChannelCreatorFactory;
 
 //var host = SuperSocketHostBuilder.Create<RpcPackageBase, RpcPipeLineFilter>()
 //    .UseHostedService<RpcServer>()
@@ -44,6 +45,7 @@ builder.Host.AsSuperSocketHostBuilder<RpcPackageBase, RpcPipeLineFilter>()
             .UseHostedService<RpcServer>()
             .UseSession<RpcSession>()
             .UsePackageDecoder<RpcPackageDecoder>()
+            .UsePackageEncoder<RpcPackageEncode>()
             .UseCommand(options => options.AddCommandAssembly(typeof(Login).Assembly))
             .UseClearIdleSession()
             .UseInProcSessionContainer()
@@ -54,7 +56,6 @@ builder.Host.AsSuperSocketHostBuilder<RpcPackageBase, RpcPipeLineFilter>()
             .ConfigureHostBuilder();
 
 builder.Services.AddLogging(s => s.AddConsole().AddDebug());
-builder.Services.AddSingleton<IPackageEncoder<RpcPackageBase>, RpcPackageEncode>();
 builder.Services.AddSingleton<IPacketFactoryPool, DefaultPacketFactoryPool>();
 
 var app = builder.Build();

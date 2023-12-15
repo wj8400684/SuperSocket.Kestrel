@@ -4,6 +4,8 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <UserSecretsId>dotnet-WorkerService-d4b3d996-b726-42f6-b648-71edcd3afd80</UserSecretsId>
+        <TargetFramework>net8.0</TargetFramework>
+        <LangVersion>12</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
