@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+        <Description>supersocket iocpTcpChannelCreatorFactory library</Description>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="SuperSocket.Server" Version="2.0.0-beta.18.421" />
+        <PackageReference Include="SuperSocket.Server" Version="$(SuperSocketVersion)" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\SuperSocket.IOCPTcpChannel\SuperSocket.IOCPTcpChannel.csproj" />

@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>    
+    <PipelinesVersion>4.7.3</PipelinesVersion>
+    <MSExtensionsVersion>3.1.10</MSExtensionsVersion>
+    <SuperSocketVersion>2.0.0-beta.18</SuperSocketVersion>
+  </PropertyGroup>
+</Project>

@@ -1,13 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net6.0;net7.0</TargetFrameworks>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <Description>supersocket iocpTcpEasyClient library</Description>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="SuperSocket.Client" Version="2.0.0-beta.18.421" />
+        <PackageReference Include="SuperSocket.Client" Version="$(SuperSocketVersion)" />
     </ItemGroup>
 
     <ItemGroup>
