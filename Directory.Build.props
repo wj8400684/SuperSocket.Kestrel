@@ -2,16 +2,17 @@
   <Import Project="Dependencies.props" />
   <PropertyGroup>
     <LangVersion>11.0</LangVersion>
-    <TargetFrameworks>net6.0;net7.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
     <SamplesTargetFrameworks>net7.0</SamplesTargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup>
     <PackageProjectUrl>https://github.com/wj8400684/SuperSocket.Kestrel.git</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+<!--    <SymbolPackageFormat>snupkg</SymbolPackageFormat>-->
     <IncludeSource>true</IncludeSource>
     <Authors>wujun</Authors>
     <Owners>wujun</Owners>

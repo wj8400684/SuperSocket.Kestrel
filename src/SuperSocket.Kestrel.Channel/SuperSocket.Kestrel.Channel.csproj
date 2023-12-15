@@ -10,6 +10,6 @@
         <PackageReference Include="SuperSocket.ProtoBase" Version="$(SuperSocketVersion)" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\Microsoft.AspNetCore.Server.PipeLine\Microsoft.AspNetCore.Server.PipeLine.csproj" />
+        <ProjectReference Include="..\SuperSocket.Kestrel.PipeLine\SuperSocket.Kestrel.PipeLine.csproj" />
     </ItemGroup>
 </Project>

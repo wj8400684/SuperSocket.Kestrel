@@ -4,6 +4,8 @@
         <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
         <Nullable>enable</Nullable>
         <Description>microsoft.AspNetCore.Server.PipeLine library</Description>
+        <AssemblyName>SuperSocket.Kestrel.PipeLine</AssemblyName>
+        <RootNamespace>SuperSocket.Kestrel.PipeLine</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="System.IO.Pipelines" Version="$(PipelinesVersion)" />

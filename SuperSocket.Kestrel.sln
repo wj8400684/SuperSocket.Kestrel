@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{59422464-DC20-4033-ACAE-9B04735EC8DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.AspNetCore.Server.PipeLine", "src\Microsoft.AspNetCore.Server.PipeLine\Microsoft.AspNetCore.Server.PipeLine.csproj", "{7207C86D-7636-4985-A75C-7B3E5E8BACC6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperSocket.Kestrel.PipeLine", "src\SuperSocket.Kestrel.PipeLine\SuperSocket.Kestrel.PipeLine.csproj", "{7207C86D-7636-4985-A75C-7B3E5E8BACC6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperSocket.IOCPTcpChannel", "src\SuperSocket.IOCPTcpChannel\SuperSocket.IOCPTcpChannel.csproj", "{9B051E9B-3598-4CF5-A141-65FCF2C41B3F}"
 EndProject
