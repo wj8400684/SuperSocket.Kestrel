@@ -6,6 +6,7 @@
     <SamplesTargetFrameworks>net7.0</SamplesTargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0-beta.18.200</Version>
   </PropertyGroup>
   <PropertyGroup>
     <PackageProjectUrl>https://github.com/wj8400684/SuperSocket.Kestrel.git</PackageProjectUrl>
