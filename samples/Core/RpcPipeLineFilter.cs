@@ -1,4 +1,5 @@
 using System.Buffers;
+using System.Buffers.Binary;
 using Core.Packages;
 using SuperSocket.ProtoBase;
 
@@ -21,10 +22,9 @@ public sealed class RpcPackageDecoder : IPackageDecoder<RpcPackageBase>
 
         reader.Advance(HeaderSize);
 
-        //¶ÁÈ¡ command
         reader.TryRead(out var command);
 
-        var packetFactory = _packetFactoryPool.Get(command) ?? throw new ProtocolException($"ÃüÁî£º{command}Î´×¢²á");
+        var packetFactory = _packetFactoryPool.Get(command) ?? throw new ProtocolException($"????{command}?????");
 
         var package = packetFactory.Create();
 
@@ -48,12 +48,33 @@ public sealed class RpcPipeLineFilter : FixedHeaderPipelineFilter<RpcPackageBase
         Decoder ??= new RpcPackageDecoder(new DefaultPacketFactoryPool());
     }
 
+    protected override RpcPackageBase DecodePackage(ref ReadOnlySequence<byte> buffer)
+    {
+        return base.DecodePackage(ref buffer);
+    }
+
     protected override int GetBodyLengthFromHeader(ref ReadOnlySequence<byte> buffer)
     {
-        var reader = new SequenceReader<byte>(buffer);
+        short bodyLength;
 
-        reader.TryReadLittleEndian(out short bodyLength);
+        if (buffer.IsSingleSegment)
+        {
+            BinaryPrimitives.TryReadInt16LittleEndian(buffer.FirstSpan, out bodyLength);
+            return bodyLength;
+        }
 
+        var headSpan = ArrayPool<byte>.Shared.Rent((int)buffer.Length);
+
+        try
+        {
+            buffer.CopyTo(headSpan);
+            BinaryPrimitives.TryReadInt16LittleEndian(headSpan, out bodyLength);
+        }
+        finally
+        {
+            ArrayPool<byte>.Shared.Return(headSpan);
+        }
+        
         return bodyLength;
     }
 }

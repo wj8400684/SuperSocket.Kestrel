@@ -2,7 +2,7 @@
   <Import Project="Dependencies.props" />
   <PropertyGroup>
     <LangVersion>11.0</LangVersion>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <SamplesTargetFrameworks>net7.0</SamplesTargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>

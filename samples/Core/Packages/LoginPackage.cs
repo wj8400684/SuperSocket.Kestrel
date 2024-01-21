@@ -16,7 +16,7 @@ public sealed partial class LoginPackage : RpcPackageWithIdentifier
 
     public override void Dispose()
     {
-        Username = default; 
+        Username = default;
         Password = default;
         base.Dispose();
     }
@@ -26,7 +26,7 @@ public sealed partial class LoginPackage : RpcPackageWithIdentifier
         return base.Encode(bufWriter);
     }
 
-    protected internal override void DecodeBody(ref SequenceReader<byte> reader, object? context)
+    public override void DecodeBody(ref SequenceReader<byte> reader, object? context)
     {
         base.DecodeBody(ref reader, context);
     }
@@ -39,4 +39,3 @@ public sealed partial class LoginRespPackage : RpcRespPackageWithIdentifier
     {
     }
 }
-

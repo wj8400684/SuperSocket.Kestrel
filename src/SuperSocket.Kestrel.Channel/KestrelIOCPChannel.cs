@@ -143,7 +143,6 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
     {
         CloseReason = closeReason;
         _cts.Cancel();
-        Close();
 
         return ValueTask.CompletedTask;
     }
@@ -176,7 +175,6 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
             {
                 try
                 {
-                    Close();
                     OnClosed();
                 }
                 catch (Exception exc)
@@ -185,26 +183,6 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
                         OnError("Unhandled exception in the method PipeChannel.Close.", exc);
                 }
             }
-        }
-    }
-
-    private void Close()
-    {
-        var socket = _socket;
-
-        if (socket == null)
-            return;
-
-        if (Interlocked.CompareExchange(ref _socket, null, socket) != socket)
-            return;
-
-        try
-        {
-            socket.Shutdown(SocketShutdown.Both);
-        }
-        finally
-        {
-            socket.Close();
         }
     }
 
@@ -369,10 +347,9 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
     /// <returns></returns>
     private async Task ReadPipeAsync(PipeReader reader)
     {
-        ReadResult result;
-
         while (!_cts.IsCancellationRequested)
         {
+            ReadResult result;
             try
             {
                 result = await reader.ReadAsync().ConfigureAwait(false);
@@ -387,8 +364,8 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
 
             var buffer = result.Buffer;
 
-            SequencePosition consumed = buffer.Start;
-            SequencePosition examined = buffer.End;
+            var consumed = buffer.Start;
+            var examined = buffer.End;
 
             if (result.IsCanceled)
                 break;
@@ -416,7 +393,6 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
                 OnError("Protocol error", e);
                 // close the connection if get a protocol error
                 CloseReason = SuperSocket.Channel.CloseReason.ProtocolError;
-                Close();
                 break;
             }
             finally
@@ -426,7 +402,7 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
         }
 
         reader.Complete();
-        WriteEOFPackage();
+        WriteEofPackage();
     }
 
     private bool ReaderBuffer(ref ReadOnlySequence<byte> buffer, out SequencePosition consumed, out SequencePosition examined)
@@ -470,7 +446,6 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
                 OnError($"Package cannot be larger than {maxPackageLength}.");
                 CloseReason = SuperSocket.Channel.CloseReason.ProtocolError;
                 // close the the connection directly
-                Close();
                 return false;
             }
 
@@ -505,7 +480,7 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
         }
     }
 
-    private void WriteEOFPackage()
+    private void WriteEofPackage()
     {
         _packagePipe.Write(default);
     }
@@ -545,7 +520,6 @@ public sealed class KestrelIOCPChannel<TPackageInfo> :
 
         return false;
     }
-
 
     private static bool IsNormalCompletion(SocketOperationResult result)
     {

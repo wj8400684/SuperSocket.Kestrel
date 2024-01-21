@@ -79,7 +79,7 @@ public abstract class RpcPackageBase : IKeyedPackageInfo<CommandKey>, IDisposabl
         return writtenCount;
     }
 
-    protected internal virtual void DecodeBody(ref SequenceReader<byte> reader, object? context)
+    public virtual void DecodeBody(ref SequenceReader<byte> reader, object? context)
     {
         MemoryPackSerializer.Deserialize(Type, reader.UnreadSequence, ref context);
     }

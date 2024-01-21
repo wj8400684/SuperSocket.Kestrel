@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SuperSocket;
 using SuperSocket.Command;
+using SuperSocket.Console.Server;
 using SuperSocket.IOCPTcpChannelCreatorFactory;
 
 var host = SuperSocketHostBuilder.Create<RpcPackageBase, RpcPipeLineFilter>()
@@ -14,7 +15,8 @@ var host = SuperSocketHostBuilder.Create<RpcPackageBase, RpcPipeLineFilter>()
     .UseCommand(options => options.AddCommandAssembly(typeof(Login).Assembly))
     .UseClearIdleSession()
     .UseInProcSessionContainer()
-    .UseIOCPTcpChannelCreatorFactory()
+    //.UseIOCPTcpChannelCreatorFactory()
+    .UseChannelCreatorFactory<NamedPipeChannelCreatorFactory>()
     .ConfigureServices((context, services) =>
     {
         services.AddLogging();

@@ -35,7 +35,7 @@ public sealed class KestrelChannelCreator : ConnectionHandler, IKestrelChannelCr
         return Task.CompletedTask;
     }
 
-    public async override Task OnConnectedAsync(ConnectionContext connection)
+    public override async Task OnConnectedAsync(ConnectionContext connection)
     {
         var handler = NewClientAccepted;
 

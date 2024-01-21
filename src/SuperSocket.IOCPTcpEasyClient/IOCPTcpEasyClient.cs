@@ -5,22 +5,25 @@ using SuperSocket.IOCPTcpChannel;
 using SuperSocket.ProtoBase;
 using System.IO.Pipelines;
 using System.Net;
+using System.Net.Sockets;
 using Microsoft.AspNetCore.Server.PipeLine;
 
 namespace SuperSocket.IOCPEasyClient;
 
-public class IOCPTcpEasyClient<TPackage, TSendPackage> : IOCPTcpEasyClient<TPackage>, IEasyClient<TPackage, TSendPackage>
+public class IOCPTcpEasyClient<TPackage, TSendPackage> : IOCPTcpEasyClient<TPackage>,
+    IEasyClient<TPackage, TSendPackage>
     where TPackage : class
 {
     private readonly IPackageEncoder<TSendPackage> _packageEncoder;
 
-    public IOCPTcpEasyClient(IPipelineFilter<TPackage> pipelineFilter, IPackageEncoder<TSendPackage> packageEncoder, ILogger? logger = null)
+    public IOCPTcpEasyClient(IPipelineFilter<TPackage> pipelineFilter, IPackageEncoder<TSendPackage> packageEncoder,
+        ILogger? logger = null)
         : this(pipelineFilter, packageEncoder, new ChannelOptions { Logger = logger })
     {
-
     }
 
-    public IOCPTcpEasyClient(IPipelineFilter<TPackage> pipelineFilter, IPackageEncoder<TSendPackage> packageEncoder, ChannelOptions options)
+    public IOCPTcpEasyClient(IPipelineFilter<TPackage> pipelineFilter, IPackageEncoder<TSendPackage> packageEncoder,
+        ChannelOptions options)
         : base(pipelineFilter, options)
     {
         _packageEncoder = packageEncoder;
@@ -56,6 +59,13 @@ public class IOCPTcpEasyClient<TPackage> : EasyClient<TPackage>
         _pipelineFilter = pipelineFilter;
     }
 
+    protected virtual IOCPTcpPipeChannel<TPackage> CreatIocpTcpPipeChannel(Socket socket,
+        IPipelineFilter<TPackage> pipelineFilter, ChannelOptions options)
+    {
+        return new IOCPTcpPipeChannel<TPackage>(socket, pipelineFilter, options,
+            new SocketSenderPool(PipeScheduler.ThreadPool), PipeScheduler.ThreadPool);
+    }
+
     protected override async ValueTask<bool> ConnectAsync(EndPoint remoteEndPoint, CancellationToken cancellationToken)
     {
         var connector = GetConnector();
@@ -73,11 +83,13 @@ public class IOCPTcpEasyClient<TPackage> : EasyClient<TPackage>
             return false;
         }
 
+        var channelOptions = Options;
         var socket = state.Socket ?? throw new Exception("Socket is null.");
 
-        var channelOptions = Options;
+        var channel = CreatIocpTcpPipeChannel(socket, _pipelineFilter, channelOptions);
 
-        SetupChannel(new IOCPTcpPipeChannel<TPackage>(socket, _pipelineFilter, channelOptions, new SocketSenderPool(PipeScheduler.ThreadPool), PipeScheduler.ThreadPool));
+        SetupChannel(channel);
+        
         return true;
     }
 }

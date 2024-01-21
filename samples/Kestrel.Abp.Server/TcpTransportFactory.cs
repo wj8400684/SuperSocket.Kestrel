@@ -124,7 +124,7 @@ public sealed class TcpTransportFactory : IChannelCreator
         _stopTaskCompletionSource = new TaskCompletionSource<bool>();
 
         _cancellationTokenSource.Cancel();
-         _connectionListener.UnbindAsync(CancellationToken.None).DoNotAwait();
+         _connectionListener.UnbindAsync().DoNotAwait();
 
         return _stopTaskCompletionSource.Task;
     }

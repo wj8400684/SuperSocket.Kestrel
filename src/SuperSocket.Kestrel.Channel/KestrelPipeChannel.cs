@@ -78,10 +78,10 @@ public sealed class KestrelPipeChannel<TPackageInfo> : ChannelBase<TPackageInfo>
     {
         try
         {
-            await _sendLock.WaitAsync();
+            await _sendLock.WaitAsync(_connectionToken);
             UpdateLastActiveTime();
             WriteBuffer(_writer, buffer);
-            await _writer.FlushAsync();
+            await _writer.FlushAsync(_connectionToken);
         }
         finally
         {
@@ -93,10 +93,10 @@ public sealed class KestrelPipeChannel<TPackageInfo> : ChannelBase<TPackageInfo>
     {
         try
         {
-            await _sendLock.WaitAsync();
+            await _sendLock.WaitAsync(_connectionToken);
             UpdateLastActiveTime();
             WritePackageWithEncoder(_writer, packageEncoder, package);
-            await _writer.FlushAsync();
+            await _writer.FlushAsync(_connectionToken);
         }
         finally
         {
@@ -108,10 +108,10 @@ public sealed class KestrelPipeChannel<TPackageInfo> : ChannelBase<TPackageInfo>
     {
         try
         {
-            await _sendLock.WaitAsync();
+            await _sendLock.WaitAsync(_connectionToken);
             UpdateLastActiveTime();
             write(_writer);
-            await _writer.FlushAsync();
+            await _writer.FlushAsync(_connectionToken);
         }
         finally
         {
@@ -224,7 +224,7 @@ public sealed class KestrelPipeChannel<TPackageInfo> : ChannelBase<TPackageInfo>
 
             try
             {
-                result = await reader.ReadAsync();
+                result = await reader.ReadAsync(CancellationToken.None);
             }
             catch (Exception e)
             {

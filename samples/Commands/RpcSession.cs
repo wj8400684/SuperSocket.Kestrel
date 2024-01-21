@@ -41,6 +41,9 @@ public sealed class RpcSession : AppSession
     /// <returns></returns>
     protected override ValueTask OnSessionConnectedAsync()
     {
+        if (RemoteEndPoint == null)
+            return ValueTask.CompletedTask;
+        
         RemoteAddress = ((IPEndPoint)RemoteEndPoint).Address.ToString();
 
         return ValueTask.CompletedTask;
