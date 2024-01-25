@@ -5,7 +5,7 @@ namespace SuperSocket.Kestrel.Internal;
 
 public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
 {
-    class BufferSegment
+    private class BufferSegment
     {
         public T[] Array { get; private set; }
 
@@ -20,10 +20,7 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
             Array = array;
         }
 
-        public bool IsAvailable
-        {
-            get { return Array.Length > End + 1; }
-        }
+        public bool IsAvailable => Array.Length > End + 1;
 
         public void Write(T value)
         {
@@ -31,17 +28,17 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
         }
     }
 
-    private const int _segmentSize = 5;
+    private const int SegmentSize = 5;
     private BufferSegment _first;
     private BufferSegment _current;
-    private object _syncRoot = new();
-    private static readonly ArrayPool<T> _pool = ArrayPool<T>.Shared;
+    private readonly object _syncRoot = new();
+    private static readonly ArrayPool<T> Pool = ArrayPool<T>.Shared;
     private ManualResetValueTaskSourceCore<T> _taskSourceCore;
-    private bool _waiting = false;
-    private bool _lastReadIsWait = false;
+    private bool _waiting;
+    private bool _lastReadIsWait;
     private int _length;
 
-    public int Length => _length;
+    public int Count => _length;
 
     public KestrelObjectPipe()
     {
@@ -49,23 +46,7 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
         _taskSourceCore = new ManualResetValueTaskSourceCore<T>();
     }
 
-    BufferSegment CreateSegment()
-    {
-        return new BufferSegment(_pool.Rent(_segmentSize));
-    }
-
-    private void SetBufferSegment(BufferSegment segment)
-    {
-        if (_first == null)
-            _first = segment;
-
-        var current = _current;
-
-        if (current != null)
-            current.Next = segment;
-
-        _current = segment;
-    }
+    #region public
 
     public int Write(T target)
     {
@@ -118,7 +99,7 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
                 value = first.Array[first.Offset];
                 first.Array[first.Offset] = default;
                 _first = first.Next;
-                _pool.Return(first.Array);
+                Pool.Return(first.Array);
                 return true;
             }
         }
@@ -142,9 +123,6 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
 
                 _length--;
 
-                if (_length == 0)
-                    OnWaitTaskStart();
-
                 return new ValueTask<T>(value);
             }
 
@@ -152,15 +130,34 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
             _lastReadIsWait = true;
             _taskSourceCore.Reset();
 
-            OnWaitTaskStart();
-
             return new ValueTask<T>(this, _taskSourceCore.Version);
         }
     }
 
-    private void OnWaitTaskStart()
+    #endregion
+
+    #region private
+
+    private static BufferSegment CreateSegment()
     {
+        return new BufferSegment(Pool.Rent(SegmentSize));
     }
+
+    private void SetBufferSegment(BufferSegment segment)
+    {
+        _first ??= segment;
+
+        var current = _current;
+
+        if (current != null)
+            current.Next = segment;
+
+        _current = segment;
+    }
+
+    #endregion
+
+    #region interface
 
     T IValueTaskSource<T>.GetResult(short token)
     {
@@ -172,38 +169,42 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
         return _taskSourceCore.GetStatus(token);
     }
 
-    void IValueTaskSource<T>.OnCompleted(Action<object> continuation, object state, short token, ValueTaskSourceOnCompletedFlags flags)
+    void IValueTaskSource<T>.OnCompleted(Action<object> continuation, object state, short token,
+        ValueTaskSourceOnCompletedFlags flags)
     {
         _taskSourceCore.OnCompleted(continuation, state, token, flags);
     }
 
+    #endregion
+
     #region IDisposable Support
-    private bool disposedValue = false; // To detect redundant calls
+
+    private bool _disposedValue; // To detect redundant calls
 
     private void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (_disposedValue)
+            return;
+
+        if (disposing)
         {
-            if (disposing)
+            lock (_syncRoot)
             {
-                lock (_syncRoot)
+                // return all segments into the pool
+                var segment = _first;
+
+                while (segment != null)
                 {
-                    // return all segments into the pool
-                    var segment = _first;
-
-                    while (segment != null)
-                    {
-                        _pool.Return(segment.Array);
-                        segment = segment.Next;
-                    }
-
-                    _first = null;
-                    _current = null;
+                    Pool.Return(segment.Array);
+                    segment = segment.Next;
                 }
-            }
 
-            disposedValue = true;
+                _first = null;
+                _current = null;
+            }
         }
+
+        _disposedValue = true;
     }
 
     void IDisposable.Dispose()
@@ -213,4 +214,3 @@ public sealed class KestrelObjectPipe<T> : IValueTaskSource<T>, IDisposable
 
     #endregion
 }
-

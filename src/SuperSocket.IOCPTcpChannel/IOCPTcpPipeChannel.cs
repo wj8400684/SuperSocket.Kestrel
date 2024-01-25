@@ -108,8 +108,6 @@ public class IOCPTcpPipeChannel<TPackageInfo> : TcpPipeChannel<TPackageInfo>
     /// <returns></returns>
     protected override async Task FillPipeAsync(PipeWriter writer, CancellationToken cancellationToken)
     {
-        var socket = _socket;
-
         while (!cancellationToken.IsCancellationRequested)
         {
             try
@@ -124,13 +122,13 @@ public class IOCPTcpPipeChannel<TPackageInfo> : TcpPipeChannel<TPackageInfo>
                 if (_waitForData)
                 {
                     // Wait for data before allocating a buffer.
-                    var waitForDataResult = await _receiver.WaitForDataAsync(socket).ConfigureAwait(false);
+                    var waitForDataResult = await _receiver.WaitForDataAsync(_socket).ConfigureAwait(false);
 
                     if (waitForDataResult.HasError)
                         throw waitForDataResult.SocketError;
                 }
 
-                var receiveResult = await _receiver.ReceiveAsync(socket, memory).ConfigureAwait(false);
+                var receiveResult = await _receiver.ReceiveAsync(_socket, memory).ConfigureAwait(false);
 
                 if (receiveResult.HasError)
                     throw receiveResult.SocketError;
@@ -169,7 +167,7 @@ public class IOCPTcpPipeChannel<TPackageInfo> : TcpPipeChannel<TPackageInfo>
             }
 
             // Make the data available to the PipeReader
-            var result = await writer.FlushAsync().ConfigureAwait(false);
+            var result = await writer.FlushAsync(CancellationToken.None).ConfigureAwait(false);
 
             if (result.IsCompleted)
                 break;

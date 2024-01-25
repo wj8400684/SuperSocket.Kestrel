@@ -2,6 +2,7 @@
 using SuperSocket.Client;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Security;
 using Client;
 using SuperSocket.Console.Server;
 

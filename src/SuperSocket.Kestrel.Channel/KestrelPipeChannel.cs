@@ -47,7 +47,7 @@ public sealed class KestrelPipeChannel<TPackageInfo> : ChannelBase<TPackageInfo>
         WaitHandleClosing();
     }
 
-    public async override IAsyncEnumerable<TPackageInfo> RunAsync()
+    public override async IAsyncEnumerable<TPackageInfo> RunAsync()
     {
         if (_readsTask == null)
             throw new Exception("The channel has not been started yet.");
@@ -282,10 +282,10 @@ public sealed class KestrelPipeChannel<TPackageInfo> : ChannelBase<TPackageInfo>
         }
 
         reader.Complete();
-        WriteEOFPackage();
+        WriteEofPackage();
     }
 
-    private void WriteEOFPackage()
+    private void WriteEofPackage()
     {
         _packagePipe.Write(default);
     }
